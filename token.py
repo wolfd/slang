@@ -22,24 +22,6 @@ class Token(Enum):
     F = auto()  # f - function
     P = auto()  # p - print
 
-TOKENS = {
-    Token.ILLEGAL: "ILLEGAL",
-    Token.EOF: "EOF",
-    Token.EOL: "EOL",
-
-    Token.IDENT: "IDENT",
-    Token.STRING: "STRING",
-
-    Token.FLOAT: "FLOAT",
-    Token.INTEGER: "INTEGER",
-
-    Token.LBRACKET: "{",
-    Token.RBRACKET: "}",
-
-    Token.F: "f",
-    Token.P: "p",
-}
-
 KEYWORDS = {
     "f": Token.F,
     "p": Token.P,
@@ -50,6 +32,13 @@ def lookup(ident: str) -> Token:
         return tok
     
     return Token.IDENT
+
+STARTS_EXPRESSION = {
+    Token.STRING,
+}
+
+def starts_expression(tok: Token) -> bool:
+    return tok in STARTS_EXPRESSION
 
 class File:
     def __init__(self, name: str, base: int, size: int, lines: List[int]):

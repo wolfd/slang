@@ -22,7 +22,7 @@ class Scanner(object):
             size=len(self.src),
             lines=[]
         )
-        
+
         self.ch: int = ord(' ')  # single unicode character value
         self.offset: int = 0  # character offset in file
         self.read_offset: int = 0  # reading offset
@@ -39,7 +39,7 @@ class Scanner(object):
             if self.ch == ord('\n'):
                 self.line_offset = self.offset
                 self.file.lines.append(self.offset)
-            
+
             read_char = ord(self.src[self.read_offset])
 
             if read_char == 0:
@@ -78,7 +78,7 @@ class Scanner(object):
         offset = self.offset
         while is_letter(self.ch) or is_digit(self.ch):
             self.next()
-        
+
         return self.src[offset:self.offset]
     
     def scan_number(self) -> (token.Token, str):
@@ -117,7 +117,7 @@ class Scanner(object):
             tok, literal = self.scan_number()
         else:
             self.next()
-            
+
             if ch == ord('\n'):  # newline forcibly ends any expression/statement
                 return pos, token.Token.EOL, '\n'
             elif ch == ord('"'):
@@ -130,7 +130,7 @@ class Scanner(object):
             else:
                 tok = token.Token.ILLEGAL
                 literal = chr(ch)
-        
+
         if literal is None:
             literal = chr(ch)
 
