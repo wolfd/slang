@@ -20,7 +20,7 @@ class Stmt:
         super().__init__()
 
 
-class BlockStmt:
+class BlockStmt(Stmt):
     def __init__(self, lbrace: int, statements: List[Stmt], rbrace: int):
         super().__init__()
         self.lbrace = lbrace
@@ -28,7 +28,7 @@ class BlockStmt:
         self.rbrace = rbrace
 
 
-class PrintStmt:
+class PrintStmt(Stmt):
     def __init__(self, p: int, expr: Expr, eol: int):
         super().__init__()
         self.p = p
@@ -66,7 +66,7 @@ class BasicLiteral(Expr):
         return self.value_pos + len(self.value)
 
 
-class FuncDecl:
+class FuncDecl(Decl):
     def __init__(self, f: int, name: Ident, body: BlockStmt):
         super().__init__()
         self.f = f
