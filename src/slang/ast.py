@@ -43,19 +43,16 @@ class Expr:
         super().__init__()
 
 class FuncDecl:
-    def __init__(self, pos: int, name: Ident, body: BlockStmt):
+    def __init__(self, f: int, name: Ident, body: BlockStmt):
         super().__init__()
-        self.pos = pos
+        self.f = f
         self.name = name
         self.body = body
-
-    def pos(self):
-        return self.pos
 
 class Scope:
     def __init__(self, outer: Scope):
         self.outer = outer
-        self.objects: Mapping[string, Object] = {}
+        self.objects: Mapping[str, Object] = {}
 
     def lookup(self, name: str) -> Object:
         return self.objects.get(name)

@@ -1,8 +1,8 @@
 from typing import List
 
-import ast
-import token
-import scanner
+from . import ast
+from . import token
+from . import scanner
 
 
 class SlangError(Exception):
@@ -80,6 +80,7 @@ class Parser(object):
 
     def parse_body(self) -> ast.BlockStmt:
         lbrace = self.expect(token.Token.LBRACKET)
+        self.expect(token.Token.EOL)  # always have to newline after opening a block
         # TODO: any sort of scope stuff
         statements = self.parse_statement_list()
         rbrace = self.expect(token.Token.RBRACKET)
@@ -100,7 +101,7 @@ class Parser(object):
         block = self.parse_body()
 
         return ast.FuncDecl(
-            pos=f,
+            f=f,
             name=ident,
             body=block
         )
@@ -125,5 +126,5 @@ class Parser(object):
         )
 
 if __name__ == "__main__":
-    my_parser = Parser("main.sl")
+    my_parser = Parser("test/main.sl")
     my_parser.parse_file()

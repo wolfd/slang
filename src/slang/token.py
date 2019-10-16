@@ -30,7 +30,7 @@ KEYWORDS = {
 def lookup(ident: str) -> Token:
     if (tok := KEYWORDS.get(ident)):
         return tok
-    
+
     return Token.IDENT
 
 STARTS_EXPRESSION = {
@@ -45,5 +45,5 @@ class File:
         self.name = name  # file name
         self.base = base  # pos value range for this file is [base, base + size]
         self.size = size
-        
+
         self.lines = lines  # first offset for each line
