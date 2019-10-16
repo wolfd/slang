@@ -126,6 +126,9 @@ class Scanner(object):
                 tok = token.Token.LBRACKET
             elif ch == ord('}'):
                 tok = token.Token.RBRACKET
+            elif ch == -1:
+                tok = token.Token.EOF
+                literal = ""  # TODO: this is a hack
             else:
                 tok = token.Token.ILLEGAL
                 literal = chr(ch)
@@ -155,6 +158,10 @@ def is_whitespace(ch: int) -> bool:
     return False
 
 if __name__ == "__main__":
-    my_scanner = Scanner("test/main.sl")
+    import os.path
+    my_scanner = Scanner(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "test/main.sl"
+    ))
     while my_scanner.offset < my_scanner.file.size:
         print(my_scanner.scan())

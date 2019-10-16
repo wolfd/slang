@@ -40,6 +40,13 @@ STARTS_EXPRESSION = {
 def starts_expression(tok: Token) -> bool:
     return tok in STARTS_EXPRESSION
 
+BASIC_LITERALS = {
+    Token.STRING,
+}
+
+def basic_literal(tok: Token) -> bool:
+    return tok in BASIC_LITERALS
+
 class File:
     def __init__(self, name: str, base: int, size: int, lines: List[int]):
         self.name = name  # file name

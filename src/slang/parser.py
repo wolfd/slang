@@ -60,8 +60,34 @@ class Parser(object):
     def parse_simple_statement(self):
         raise SlangError(self.pos, "not implemented, buddy")
 
+    def parse_operand(self) -> ast.Expr:
+        if self.tok == token.Token.IDENT:
+            expr = self.parse_ident()
+            # if not lhs, resolve identifier
+            return expr
+        elif token.basic_literal(self.tok):
+            expr = ast.BasicLiteral(
+                value_pos=self.pos,
+                kind=self.tok,
+                value=self.literal
+            )
+            self.next()
+            return expr
+
+    def parse_expression(self) -> ast.Expr:
+        # TODO: all of this
+        return self.parse_operand()
+
     def parse_print_statement(self) -> ast.PrintStmt:
-        raise SlangError(self.pos, "not implemented, buddy")
+        p = self.expect(token.Token.P)
+        expr = self.parse_expression()
+        eol = self.expect(token.Token.EOL)
+
+        return ast.PrintStmt(
+            p=p,
+            expr=expr,
+            eol=eol
+        )
 
     def parse_statement(self) -> ast.Stmt:
         if token.starts_expression(self.tok):
@@ -73,7 +99,7 @@ class Parser(object):
 
     def parse_statement_list(self) -> List[ast.Stmt]:
         statements: List[ast.Stmt] = []
-        while self.tok != token.Token.RBRACKET or self.tok != token.Token.EOF:
+        while self.tok != token.Token.RBRACKET and self.tok != token.Token.EOF:
             statements.append(self.parse_statement())
 
         return statements
@@ -115,6 +141,10 @@ class Parser(object):
 
         declarations: List[ast.Decl] = []
         while self.tok != token.Token.EOF:
+            # consume extra newlines
+            if self.tok == token.Token.EOL:
+                self.next()
+                continue
             declarations.append(self.parse_declaration())
 
         self.close_scope()
@@ -126,5 +156,9 @@ class Parser(object):
         )
 
 if __name__ == "__main__":
-    my_parser = Parser("test/main.sl")
-    my_parser.parse_file()
+    import os.path
+    my_parser = Parser(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "test/main.sl"
+    ))
+    parsed = my_parser.parse_file()
